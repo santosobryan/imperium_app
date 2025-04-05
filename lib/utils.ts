@@ -2,6 +2,7 @@
 import { type ClassValue, clsx } from "clsx";
 import qs from "query-string";
 import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -193,3 +194,59 @@ export const getTransactionStatus = (date: Date) => {
 
   return date > twoDaysAgo ? "Processing" : "Success";
 };
+
+export const authformSchema = (type: string) => z.object({
+  password: z.string()
+    .min(1, ),
+    // .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" }) 
+    // .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
+    // .regex(/[0-9]/, { message: "Password must contain at least one number" }),
+
+    //{ message: "Password must be at least 8 characters long" }
+    firstName: type === 'sign-in' ? z.string().optional() : z.string()
+    .min(2, "First name must be at least 2 characters")
+    .max(50, "First name cannot exceed 50 characters")
+    .regex(/^[A-Za-z\s]+$/, "First name can only contain letters and spaces"),
+
+  lastName :type === 'sign-in' ? z.string().optional() : z.string()
+    .min(2, "Last name must be at least 2 characters")
+    .max(50, "Last name cannot exceed 50 characters")
+    .regex(/^[A-Za-z]+$/, "Last name can only contain letters"),
+
+  address:type === 'sign-in' ? z.string().optional() : z.string()
+    .min(5, "Address must be at least 5 characters")
+    .max(100, "Address cannot exceed 100 characters"),
+
+  city:type === 'sign-in' ? z.string().optional() : z.string()
+    .min(2, "City must be atleast 2 characters")
+    .max(100, "City cannot exceed 100 characters"),  
+
+  state:type === 'sign-in' ? z.string().optional(): z.string()
+    .length(2, "State must be a 2-letter code (e.g., CA, NY)")
+    .regex(/^[A-Z]{2}$/, "State must be uppercase (e.g., CA)"),
+
+  postalCode: type === 'sign-in' ? z.string().optional(): z.string()
+    .min(5, "Postal code must be 5 digits (e.g., 90210)")
+    .max(5, "Postal code must be 5 digits (e.g., 90210)")
+    .regex(/^\d{5}$/, "Postal code must be 5 digits (e.g., 90210)"),
+
+  DOB: type === 'sign-in' ? z.string().optional(): z.string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date of birth must be in YYYY-MM-DD format")
+    .refine((val) => {
+      const date = new Date(val);
+      return !isNaN(date.getTime()); // Valid date check
+    }, "Invalid date"),
+
+  SSN: type === 'sign-in' ? z.string().optional(): z.string()
+    .min(7, "SSN must be at least 7 digits")
+    .max(9, "SSN cannot exceed 9 digits")
+    .regex(/^\d+$/, "SSN can only contain numbers"),
+
+    // Both sign up and sign in
+  email: z.string()
+  .email("Please enter a valid email address (e.g., user@example.com)")
+  .min(5, "Email must be at least 5 characters long"),
+});
+
+
+
