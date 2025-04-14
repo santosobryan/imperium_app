@@ -10,7 +10,7 @@ const BankCard = ({account, userName, showBalance = true}:CreditCardProps) => {
           <div className='bank-card_content'>
             <div>
               <h1 className='text-16 font-semibold text-white'>
-                {account.name || userName}
+                {userName}
               </h1>
               <p className='font-ibm-plex-serif font-black text-white'>
                 {formatAmount(account.currentBalance)}
@@ -60,25 +60,4 @@ const BankCard = ({account, userName, showBalance = true}:CreditCardProps) => {
   )
 }
 
-export default BankCard
-
-/*<Image
-              src='/icons/Paypass.svg'
-              width={20}
-              height={24}
-              alt='pay'
-            />
-            <Image
-              src='/icons/mastercard.svg'
-              width={45}
-              height={32}
-              alt='mastercard'
-            />
-          </div>
-          <Image
-            src='/icons/lines.png'
-            width={316}
-            height={190}
-            alt='lines'
-            className='abosulte top-0 left-0'
-            />*/
+export default BankCard 
