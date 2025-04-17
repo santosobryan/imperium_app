@@ -336,7 +336,7 @@
 
   /* Footer */
   .footer {
-    @apply flex cursor-pointer items-center justify-between gap-2 py-6;
+    @apply flex cursor-pointer items-center justify-between gap-4 py-6;
   }
 
   .footer_name {
@@ -348,11 +348,11 @@
   }
 
   .footer_name-mobile {
-    @apply flex size-10 items-center justify-center rounded-full bg-gray-200;
+    @apply flex size-10 items-center justify-center rounded-full bg-gray-200 text-xl font-bold text-gray-700;
   }
 
   .footer_email-mobile {
-    @apply flex flex-1 flex-col justify-center;
+    @apply flex flex-1 flex-col justify-center gap-1 min-w-0;
   }
 
   .footer_image {
