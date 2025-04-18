@@ -238,8 +238,7 @@ export const authformSchema = (type: string) => z.object({
     }, "Invalid date"),
 
   SSN: type === 'sign-in' ? z.string().optional(): z.string()
-    .min(7, "SSN must be at least 7 digits")
-    .max(9, "SSN cannot exceed 9 digits")
+    .length(9, "SSN must be exactly 9 digits")
     .regex(/^\d+$/, "SSN can only contain numbers"),
 
     // Both sign up and sign in

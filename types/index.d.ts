@@ -8,15 +8,15 @@ declare type SearchParamProps = {
 // ========================================
 
 declare type SignUpParams = {
-  firstName?: string;
-  lastName?: string;
-  address1?: string;
-  city?: string;
-  state?: string;
-  postalCode?: string;
-  dateOfBirth?: string;
-  ssn?: string;
-  email?: string;
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  dateOfBirth: string;
+  ssn: string;
+  email: string;
   password: string;
 };
 
@@ -28,18 +28,17 @@ declare type LoginUser = {
 declare type User = {
   $id: string;
   email: string;
-  userId: string;
-  dwollaCustomerUrl: string;
-  dwollaCustomerId: string;
+  username: string;
   firstName: string;
   lastName: string;
-  name: string;
   address1: string;
   city: string;
   state: string;
   postalCode: string;
   dateOfBirth: string;
   ssn: string;
+  dwollaCustomerURL: string;
+  dwollaCustomerID: string;
 };
 
 declare type NewUserParams = {
@@ -119,7 +118,7 @@ declare type TransferParams = {
 };
 
 declare type AddFundingSourceParams = {
-  dwollaCustomerId: string;
+  dwollaCustomerID: string;
   processorToken: string;
   bankName: string;
 };
@@ -176,7 +175,7 @@ declare interface PaginationProps {
 declare interface PlaidLinkProps {
   user: User;
   variant?: "primary" | "ghost";
-  dwollaCustomerId?: string;
+  dwollaCustomerID?: string;
 }
 
 // declare type User = sdk.Models.Document & {

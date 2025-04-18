@@ -24,6 +24,7 @@ import { Loader2 } from 'lucide-react';
 import SignUp from '@/app/(auth)/sign-up/page';
 import { useRouter } from 'next/navigation';
 import { signUp, signIn,} from '../lib/actions/user.actions';
+import PlaidLink from './PlaidLink';
 
 
 const AuthForm = ({type}: {type:string}) => {
@@ -47,10 +48,29 @@ const AuthForm = ({type}: {type:string}) => {
         setIsLoading(true)
         try {
             // sign up with appwrite and create plaid token
-            if(type === 'sign-up'){
-                const newUser = await signUp(data);
-                setUser(newUser)
 
+            const userData={
+                firstName: data.firstName!,
+                lastName: data.lastName!,
+                email: data.email,
+                password: data.password,
+                address1: data.address!,
+                city: data.city!,
+                state: data.state!,
+                postalCode: data.postalCode!,
+                dateOfBirth: data.DOB!,
+                ssn: data.SSN!.padStart(9, '0')
+            }
+            
+            if(type === 'sign-up'){
+                console.log("Submitting user data:", JSON.stringify(userData, null, 2));
+                const newUser = await signUp(userData);
+                if (!newUser) {
+                  console.error("Failed to create user - returned null");
+                } else {
+                  console.log("User created successfully:", newUser);
+                  setUser(newUser);
+                }
             } 
             if(type === 'sign-in'){
                 console.log('Attempting sign in with:', data.email);
@@ -96,9 +116,11 @@ const AuthForm = ({type}: {type:string}) => {
             </p>
         </div>
         </header>
-        {user? (
+        {user ? (
             <div className='flex flex-col gap-4'>
-                {/*plaidlink*/}
+                <h2 className="text-lg font-medium text-center">Your account has been created successfully!</h2>
+                <p className="text-sm text-gray-500 text-center mb-4">Now let's connect your bank account</p>
+                <PlaidLink user={user} variant="primary"/>
             </div>
         ) : (
             <>
@@ -129,7 +151,7 @@ const AuthForm = ({type}: {type:string}) => {
                             <CustomInput
                             control={form.control}
                             name='address'
-                            label='Address'
+                            label='address'
                             placeholder='Enter your address'
                             type='text'
                             />
@@ -174,7 +196,7 @@ const AuthForm = ({type}: {type:string}) => {
                             control={form.control}
                             name='SSN'
                             label='SSN Number'
-                            placeholder='Example = 5345753'
+                            placeholder='Enter 9-digit SSN'
                             type='text'
                             />
                         </div>
@@ -186,7 +208,7 @@ const AuthForm = ({type}: {type:string}) => {
                         control={form.control}
                         name='email'
                         label='Email address'
-                        placeholder='Enter your Email Address'
+                        placeholder='Enter your Email address'
                         type='email'
                     />
                     <CustomInput
