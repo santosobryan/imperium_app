@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BankTabItem } from './BankTabItem';
 import BankInfo from './BankInfo';
 import TransactionsTable from './TransactionsTable';
-import { Pagination } from './Pagination';
 // Don't import Account from node-appwrite as it has a different structure
 // than what you're using in your application
 // import { Account } from 'node-appwrite'
@@ -24,16 +23,6 @@ const RecentTransactions = ({accounts, transactions = [], appwriteItemId, page =
   
   // Ensure we have a valid default value
   const defaultTabValue = appwriteItemId || (accounts[0]?.appwriteItemId || accounts[0]?.id || 'default');
-
-  // Calculate pagination values
-  const rowsPerPage = 10;
-  const totalPages = Math.ceil((transactions?.length || 0) / rowsPerPage);
-  const currentPage = Number(page) || 1;
-  const indexOfLastTransaction = currentPage * rowsPerPage;
-  const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
-  const currentTransactions = transactions?.slice(
-    indexOfFirstTransaction, indexOfLastTransaction
-  ) || [];
   
   return (
     <section className='recent-transactions'>
@@ -49,7 +38,7 @@ const RecentTransactions = ({accounts, transactions = [], appwriteItemId, page =
         </header>
         <Tabs defaultValue={defaultTabValue} className="w-full">
             <TabsList className="recent-transactions-tablist">
-                {accounts.map((account) => (
+                {accounts.map((account: Account) => (
                   <TabsTrigger key={account.id} value={account.appwriteItemId}>
                     <BankTabItem
                       key={account.id}
@@ -59,27 +48,22 @@ const RecentTransactions = ({accounts, transactions = [], appwriteItemId, page =
                   </TabsTrigger>
                 ))}
             </TabsList>
-            
-            {accounts.map((account) => (
+            {accounts.map((account: Account) =>(
                 <TabsContent
-                    value={account.appwriteItemId}
-                    key={account.id}
+                    value = {account.appwriteItemId}
+                    key = {account.id}
                     className='space-y-4'
                 >
                     <BankInfo
-                        account={account}
-                        appwriteItemId={appwriteItemId}
+                        account = {account}
+                        appwriteItemId = {appwriteItemId}
                         type='full'
-                    />
+                    >
+                    </BankInfo>
                     <TransactionsTable 
-                        transactions={currentTransactions}
-                    />
-                    
-                    {totalPages > 1 && (
-                      <div className="my-4 w-full">
-                        <Pagination totalPages={totalPages} page={currentPage} />
-                      </div>
-                    )}
+                    transactions = {transactions}>
+
+                    </TransactionsTable>
                 </TabsContent>
             ))}
         </Tabs>
