@@ -4,26 +4,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BankTabItem } from './BankTabItem';
 import BankInfo from './BankInfo';
 import TransactionsTable from './TransactionsTable';
-// Don't import Account from node-appwrite as it has a different structure
-// than what you're using in your application
-// import { Account } from 'node-appwrite'
+
 
 const RecentTransactions = ({accounts, transactions = [], appwriteItemId, page = 1}: RecentTransactionsProps) => {
-  // Make sure we have valid data to work with
-  if (!accounts || !Array.isArray(accounts) || accounts.length === 0) {
-    return (
-      <section className='recent-transactions'>
-        <header className='flex items-center justify-between'>
-          <h2 className='recent-transactions-label'>Recent transactions</h2>
-        </header>
-        <div className="p-4 text-center text-gray-500">No accounts available</div>
-      </section>
-    );
-  }
-  
-  // Ensure we have a valid default value
-  const defaultTabValue = appwriteItemId || (accounts[0]?.appwriteItemId || accounts[0]?.id || 'default');
-  
+ 
   return (
     <section className='recent-transactions'>
         <header className='flex items-center justify-between'>
@@ -36,7 +20,7 @@ const RecentTransactions = ({accounts, transactions = [], appwriteItemId, page =
                 View All
             </Link>
         </header>
-        <Tabs defaultValue={defaultTabValue} className="w-full">
+        <Tabs defaultValue={appwriteItemId} className="w-full">
             <TabsList className="recent-transactions-tablist">
                 {accounts.map((account: Account) => (
                   <TabsTrigger key={account.id} value={account.appwriteItemId}>
