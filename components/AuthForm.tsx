@@ -47,50 +47,65 @@ const AuthForm = ({type}: {type:string}) => {
         // ✅ This will be type-safe and validated.
         setIsLoading(true)
         try {
-            // sign up with appwrite and create plaid token
-
-            const userData={
-                firstName: data.firstName!,
-                lastName: data.lastName!,
-                email: data.email,
-                password: data.password,
-                address1: data.address!,
-                city: data.city!,
-                state: data.state!,
-                postalCode: data.postalCode!,
-                dateOfBirth: data.DOB!,
-                ssn: data.SSN!.padStart(9, '0')
-            }
-            
             if(type === 'sign-up'){
+                console.log("Submitting user data for sign-up");
+                
+                // Only prepare the full user data for sign-up
+                const userData = {
+                    firstName: data.firstName!,
+                    lastName: data.lastName!,
+                    email: data.email,
+                    password: data.password,
+                    address1: data.address!,
+                    city: data.city!,
+                    state: data.state!,
+                    postalCode: data.postalCode!,
+                    dateOfBirth: data.DOB!,
+                    ssn: data.SSN!.padStart(9, '0')
+                };
+                
                 console.log("Submitting user data:", JSON.stringify(userData, null, 2));
                 const newUser = await signUp(userData);
+                
                 if (!newUser) {
-                  console.error("Failed to create user - returned null");
+                    console.error("Failed to create user - returned null");
                 } else {
-                  console.log("User created successfully:", newUser);
-                  setUser(newUser);
+                    console.log("User created successfully:", newUser);
+                    setUser(newUser);
                 }
             } 
-            if(type === 'sign-in'){
+            else if(type === 'sign-in'){
                 console.log('Attempting sign in with:', data.email);
-                const response = await signIn({
-                    email: data.email,
-                    password: data.password
-                })
+                try {
+                    // For sign-in, only pass email and password
+                    const response = await signIn({
+                        email: data.email,
+                        password: data.password
+                    });
 
-                console.log('Sign-in response:', response);
-                if(response){
-                    router.push('/');
-                } 
+                    console.log('Sign-in response:', response);
+                    
+                    if(response) {
+                        console.log('Sign-in successful, redirecting to dashboard...');
+                        // Add a timestamp to force a clean reload and avoid any caching issues
+                        const timestamp = new Date().getTime();
+                        window.location.href = `/?t=${timestamp}`;
+                    } else {
+                        console.error('Sign-in failed - no response returned');
+                        // Handle sign-in failure
+                        alert('Sign-in failed. Please check your credentials and try again.');
+                    }
+                } catch (error) {
+                    console.error('Sign-in error caught:', error);
+                    alert('An error occurred during sign-in. Please try again.');
+                }
             }
         } catch (error) {
             console.error('Authentication error:', error);
-            // You can add UI feedback here to show the error to the user
-        }finally{
+            alert(`Authentication error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        } finally {
             setIsLoading(false)
         }
-        
       }
 
   return (

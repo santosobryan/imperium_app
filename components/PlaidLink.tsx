@@ -2,10 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import {PlaidLinkOnSuccess, PlaidLinkOptions, usePlaidLink} from 'react-plaid-link'
 import { useRouter } from 'next/navigation';
-import { createLinkToken } from '@/lib/actions/user.actions';
+import { createLinkToken, exchangePublicToken } from '@/lib/actions/user.actions';
 
 const PlaidLink = ({user, variant}: PlaidLinkProps) => {
     const [token, setToken] = useState('');
+    const router = useRouter();
 
     useEffect(() =>{
         const getLinkToken = async () =>{
@@ -19,15 +20,29 @@ const PlaidLink = ({user, variant}: PlaidLinkProps) => {
     }, [user]);
 
     const onSuccess = useCallback<PlaidLinkOnSuccess>(async (public_token: string) =>{
-        const router = useRouter();
-
-        // await exchangePublicToken({
-        //     publicToken: public_token,
-        //     user,
-        // })
+        console.log("PlaidLink onSuccess called with token");
+        
+        // Validate the user object has required properties
+        if (!user || !user.$id || !user.dwollaCustomerID) {
+            console.error("User object is missing required properties:", user);
+            alert("Error: User profile is incomplete. Please try again or contact support.");
+            return;
+        }
+        
+        console.log("Exchanging public token with user:", {
+            userId: user.$id,
+            dwollaCustomerID: user.dwollaCustomerID
+        });
+        
+        const result = await exchangePublicToken({
+            publicToken: public_token,
+            user,
+        });
+        
+        console.log("Exchange result:", result);
 
         router.push('/')
-    },[user]);
+    },[user, router]);
 
     const config: PlaidLinkOptions ={
         token,
