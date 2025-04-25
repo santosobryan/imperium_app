@@ -166,7 +166,6 @@ export async function getLoggedInUser() {
     const { account } = await createSessionClient();
     const authUser = await account.get();
     
-    console.log("Auth user retrieved:", authUser.$id);
     
     // Since we're using document ID directly in signUp, we should try to get the document directly
     try {
@@ -181,7 +180,6 @@ export async function getLoggedInUser() {
       
       // If user profile is found, return it
       if (userDocs.documents.length > 0) {
-        console.log("User profile found by email");
         return parseStringify(userDocs.documents[0]);
       }
       

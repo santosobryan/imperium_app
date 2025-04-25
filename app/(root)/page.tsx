@@ -47,19 +47,13 @@ const Home = async ({searchParams: {id, page}}: SearchParamProps) => {
 
   // Only try to get account details if we have a valid appwriteItemId
   const account = appwriteItemId ? await getAccount({appwriteItemId}) : null;
-
-  console.log({
-    accountsData,
-    account
-  });
-
   return (
     <section className="home">
       <div className="home-content">
         <header className='home-header'>  
           <HeaderBox 
             type="greeting"
-            title="Welcome"
+            title="Welcome,"
             user={loggedIn.firstName || 'Guest'}
             subtext='Access your transactions and manage your account efficiently' 
           /> 

@@ -1,5 +1,5 @@
 import { topCategoryStyles } from '@/constants';
-import { cn } from '@/lib/utils';
+import { cn, formatAmount } from '@/lib/utils';
 import Image from 'next/image';
 import { Progress } from './ui/progress';
 
@@ -21,11 +21,12 @@ const Category = ({ category }: { category: CategoryCount }) => {
       <div className="flex w-full flex-1 flex-col gap-2">
         <div className="text-14 flex justify-between">
           <h2 className={cn('font-medium', main)}>{category.name}</h2>
-          <h3 className={cn('font-normal', count)}>{category.count}</h3>
+          <h3 className={cn('font-normal', count)}>{formatAmount(category.totalAmount)}</h3>
         </div>
         <Progress
           value={(category.count / category.totalCount) * 100}
           className={cn('h-2 w-full', progressBg)}
+          // @ts-ignore - indicatorClassName is used in the component but not in the type definition
           indicatorClassName={cn('h-2 w-full', indicator)}
         />
       </div>

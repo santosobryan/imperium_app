@@ -4,12 +4,13 @@ import React from 'react'
 import BankCard from './BankCard'
 import { countTransactionCategories } from '@/lib/utils'
 import Category from './Category'
+// import PlaidLink from './PlaidLink'
+// import { Button } from '@/components/ui/button'
 
 
 const RightSidebar = ({user, transactions, banks}:RightSidebarProps)  => {
 const fullName = `${user.firstName} ${user.lastName}`;
 const categories: CategoryCount[] = countTransactionCategories(transactions);
-console.log(categories);
   return (
     <aside className='right-sidebar'>
         <section className='flex flex-col pb-8'>
@@ -33,17 +34,25 @@ console.log(categories);
         <section className='banks'>
             <div className='flex w-full justify-between'>
                 <h2 className='header-2'>My Banks</h2>
-                <Link href='/' className='flex gap-2'>
-                    <Image
-                    src='/icons/plus.svg'
-                    width={20}
-                    height={20}
-                    alt='plus'
-                    />
-                    <h2 className='text-14 font-semibold text-gray-600'>
-                        Add Bank
-                    </h2>
-                </Link>
+                <div className='flex items-center'>
+                    {/* <Button onClick={() => {
+                        const plaidButton = document.querySelector('.plaidlink-ghost') as HTMLButtonElement;
+                        if (plaidButton) plaidButton.click();
+                    }} className='flex gap-2 cursor-pointer'> */}
+                        {/* <Image
+                        src='/icons/plus.svg'
+                        width={20}
+                        height={20}
+                        alt='plus'
+                        />
+                        <h2 className='text-14 font-semibold text-gray-600'>
+                            Add Bank
+                        </h2> */}
+                    {/* </Button> */}
+                    {/* <div className="hidden">
+                        <PlaidLink user={user} variant="ghost" />
+                    </div> */}
+                </div>
             </div>
             {banks?.length > 0 && (
                 <div className='relative flex flex-1 flex-col items-center justifty-center gap-5'>

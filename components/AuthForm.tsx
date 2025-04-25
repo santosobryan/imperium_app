@@ -113,7 +113,7 @@ const AuthForm = ({type}: {type:string}) => {
         <header className='flex flex-col gap-5 md:gap-8'>
         <Link href='/' className='cursor-pointer items-center gap-1 flex'>
             <Image src="/icons/logo.svg" alt='logo' width={34} height={34}/>
-            <h1 className='text-26 font-ibm-plex-serif font-bold text-black-1'>Horizon</h1>
+            <h1 className='text-26 font-ibm-plex-serif font-bold text-black-1'>Imperium</h1>
         </Link>
         <div className='flex flex-col gap-1 md:gap-3'>
             <h1 className='text-24 lg:text-30 font-semibold text-gray-900'>{user
@@ -163,21 +163,21 @@ const AuthForm = ({type}: {type:string}) => {
                             />
                         </div>
                         <div className="col-span-2">
-                            <CustomInput
-                            control={form.control}
-                            name='address'
-                            label='address'
-                            placeholder='Enter your address'
-                            type='text'
-                            />
-
-                            <CustomInput
-                            control={form.control}
-                            name='city'
-                            label='City'
-                            placeholder='Example = "LA"'
-                            type='text'
-                            />
+                        <CustomInput
+                        control={form.control}
+                        name='address'
+                        label='Address'
+                        placeholder='Enter your address'
+                        type='text'
+                        />
+                        <div className='mt-4'></div>
+                        <CustomInput
+                        control={form.control}
+                        name='city'
+                        label='City'
+                        placeholder='Example = "LA"'
+                        type='text'
+                        />
                         </div>
                         <div className="col-span-1">
                             <CustomInput

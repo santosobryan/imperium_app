@@ -133,7 +133,7 @@ export function getAccountTypeColors(type: AccountTypes) {
 export function countTransactionCategories(
   transactions: Transaction[]
 ): CategoryCount[] {
-  const categoryCounts: { [category: string]: number } = {};
+  const categoryData: { [category: string]: { count: number, totalAmount: number } } = {};
   let totalCount = 0;
 
   // Iterate over each transaction
@@ -141,25 +141,31 @@ export function countTransactionCategories(
     transactions.forEach((transaction) => {
       // Extract the category from the transaction
       const category = transaction.category;
+      const amount = Math.abs(transaction.amount); // Use absolute value for consistent totals
 
-      // If the category exists in the categoryCounts object, increment its count
-      if (categoryCounts.hasOwnProperty(category)) {
-        categoryCounts[category]++;
+      // If the category exists in the categoryData object, update its data
+      if (categoryData.hasOwnProperty(category)) {
+        categoryData[category].count++;
+        categoryData[category].totalAmount += amount;
       } else {
-        // Otherwise, initialize the count to 1
-        categoryCounts[category] = 1;
+        // Otherwise, initialize the category data
+        categoryData[category] = { 
+          count: 1, 
+          totalAmount: amount 
+        };
       }
 
       // Increment total count
       totalCount++;
     });
 
-  // Convert the categoryCounts object to an array of objects
-  const aggregatedCategories: CategoryCount[] = Object.keys(categoryCounts).map(
+  // Convert the categoryData object to an array of objects
+  const aggregatedCategories: CategoryCount[] = Object.keys(categoryData).map(
     (category) => ({
       name: category,
-      count: categoryCounts[category],
+      count: categoryData[category].count,
       totalCount,
+      totalAmount: categoryData[category].totalAmount
     })
   );
 

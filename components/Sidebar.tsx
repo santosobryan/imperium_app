@@ -15,7 +15,7 @@ const Sidebar = ({user}:SiderbarProps) => {
             <nav className='flex flex-col gap-4'>
                 <Link href='/' className='mb-12 cursor-pointer items-center gap-2 flex'>
                     <Image src="/icons/logo.svg" alt='logo' width={34} height={34} className='size-[24px] max-xl:size-14'/>
-                    <h1 className='sidebar-logo'>Horizon</h1>
+                    <h1 className='sidebar-logo'>Imperium</h1>
                 </Link>
                 {sidebarLinks.map((item) => {
                     const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`);
