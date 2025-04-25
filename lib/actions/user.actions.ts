@@ -467,6 +467,22 @@ export const getBank = async ({documentId}: getBankProps) => {
     }
 }
 
+export const getBankByAccountId = async ({accountId}: getBankByAccountIdProps) => {
+    try {
+        const {database} = await createAdminClient();
+        const bank = await database.listDocuments(
+            DATABASE_ID!,
+            BANK_COLLECTION_ID!,
+            [Query.equal('accountId', [accountId])]
+        )
+
+        if(bank.total !== 1) return null
+        return parseStringify(bank.documents[0]);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 // Overall process for public access Token
 // 1. Exchange our public token for the access token => allows  us to create a bank account
 // 2. Allowing us to access that account's data

@@ -13,6 +13,8 @@ import { plaidClient } from "../plaid";
 import { parseStringify } from "../utils";
 import { getBanks, getBank } from "./user.actions";
 
+import {getTransactionsByBankId} from './transactions.actions'
+
 /**
  * Get multiple bank accounts for a user
  */
@@ -78,6 +80,23 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
     });
     const accountData = accountsResponse.data.accounts[0];
 
+    // Get transfer transactions from appwrite
+    const transferTransactionsData = await getTransactionsByBankId({
+      bankId: bank.$id,
+    });
+
+    const transferTransactions = transferTransactionsData.documents.map(
+      (transferData: Transaction) => ({
+        id: transferData.$id,
+        name: transferData.name!,
+        amount: transferData.amount!,
+        date: transferData.$createdAt,
+        paymentChannel: transferData.channel,
+        category: transferData.category,
+        type: transferData.senderBankId === bank.$id ? 'debit' : 'credit',
+      }),
+    );
+
     // Get institution info from Plaid
     const institution = await getInstitution({
       institutionId: accountsResponse.data.item.institution_id!,
@@ -103,7 +122,7 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
     };
 
     // Sort transactions by date with most recent first
-    const allTransactions = [...transactions].sort(
+    const allTransactions = [...transactions, ...transferTransactions].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 

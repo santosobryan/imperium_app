@@ -14,16 +14,15 @@ import CategoryBadge from './CategoryBadge';
 
 const TransactionsTable = ({transactions}: TransactionTableProps) => {
   return (
-    <div className='w-50% overflow-hidden'>
-      <Table className="w-full">
+      <Table className="transactions-table">
         <TableHeader className='bg-[#f9fafb]'>
             <TableRow>
               <TableHead className="px-2">Transactions</TableHead>
               <TableHead className="px-2">Amount</TableHead>
               <TableHead className="px-2">Status</TableHead>
               <TableHead className="px-2">Date</TableHead>
-              <TableHead className="px-2 max-md:hidden">Channel</TableHead>
-              <TableHead className="px-2 max-md:hidden">Category</TableHead>
+              <TableHead className="px-2">Channel</TableHead>
+              <TableHead className="px-2">Category</TableHead>
             </TableRow>
         </TableHeader>
         <TableBody>
@@ -52,10 +51,10 @@ const TransactionsTable = ({transactions}: TransactionTableProps) => {
                     <TableCell className='min-w-32 pl-2 pr-10'>
                       {formatDateTime(new Date(t.date)).dateTime}
                     </TableCell>
-                    <TableCell className='pl-2 pr-10 capitalize min-w-24'>
+                    <TableCell className='pl-2 pr-10 capitalize min-w-24 '>
                       {t.paymentChannel}
                     </TableCell>
-                    <TableCell className='pl-2 pr-10 max-md:hidden'>
+                    <TableCell className='pl-2 pr-10'>
                     <CategoryBadge category={t.category}></CategoryBadge>
                     </TableCell>
                 </TableRow>
@@ -63,9 +62,9 @@ const TransactionsTable = ({transactions}: TransactionTableProps) => {
             })}
         </TableBody>
     </Table>
-
-    </div>
   )
 }
 
 export default TransactionsTable
+
+// max-md:hidden

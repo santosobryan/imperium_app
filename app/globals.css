@@ -275,7 +275,7 @@ html, body {
   }
 
   .plaidlink-default {
-    @apply flex !justify-start cursor-pointer gap-3 !bg-transparent flex-row;
+    @apply flex !justify-start cursor-pointer gap-3 rounded-lg !bg-transparent flex-row;
   }
 
   /* Auth */
@@ -387,5 +387,15 @@ html, body {
 
   .sidebar-label {
     @apply text-16 font-semibold text-black-2 max-xl:hidden;
+  }
+
+  /* Mobile styles for TransactionsTable */
+  @media (max-width: 768px) {
+    .transactions-table {
+      overflow-x: auto !important;
+      display: block !important; /* Ensure the table can scroll horizontally */
+      white-space: nowrap !important; /* Prevent table cells from wrapping */
+      width: 100% !important;
+    }
   }
 }
