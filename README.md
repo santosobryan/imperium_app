@@ -2,9 +2,9 @@
 ##  🌟 Overview
 Imperium is a comprehensive financial management application built with Next.js 14 that allows users to securely connect their bank accounts via Plaid, view transaction history, and transfer funds between accounts. The app leverages Appwrite for backend services, Dwolla for payment processing, and Sentry for error monitoring.
 
-If you would like to see the dashboard without signing-up, please use the dummy account:  
-email: johndoe22@gmail.com  
-password: johnpassword
+Please sign up for your own account to try, miniumum authentication is needed for a smoother sandbox experience.
+
+ **Due to some recent changes from Plaid's sandbox API calls, several parts of the dashboaard will be a little different, fixes are on going!**
 
 ![image](https://github.com/user-attachments/assets/d90e18c4-dbad-4a8b-b7aa-29caa71219bf)
 
