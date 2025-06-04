@@ -24,7 +24,7 @@ const RecentTransactions = ({accounts, transactions = [], appwriteItemId, page =
             href={`/transaction-history/?id=${appwriteItemId || ''}`}
             className='view-all-btn mr-2'>
                 View All
-            </Link>
+            </Link> 
         </header>
         <Tabs defaultValue={appwriteItemId} className="w-full">
             <TabsList className="recent-transactions-tablist">

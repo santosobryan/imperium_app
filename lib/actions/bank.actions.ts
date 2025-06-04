@@ -15,9 +15,19 @@ import { getBanks, getBank } from "./user.actions";
 
 import {getTransactionsByBankId} from './transactions.actions'
 
+import { CATEGORY_MAPPINGS } from "@/constants";
+
 /**
  * Get multiple bank accounts for a user
  */
+
+function toTitleCase(str: string): string {
+  return str.replace(
+    /\w\S*/g,
+    text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+  );
+}
+
 export const getAccounts = async ({ userId }: getAccountsProps) => {
   try {
     // Get banks from database
@@ -174,19 +184,28 @@ export const getTransactions = async ({
       });
 
       const data = response.data;
+      transactions = response.data.added.map((transaction) => {
+        console.log(transaction.personal_finance_category?.primary);
+        
+        // Safe category mapping with fallback
+        const primaryCategory = transaction.personal_finance_category?.primary;
+        const category = primaryCategory && CATEGORY_MAPPINGS[primaryCategory] 
+          ? CATEGORY_MAPPINGS[primaryCategory] 
+          : "Other";
 
-      transactions = response.data.added.map((transaction) => ({
-        id: transaction.transaction_id,
-        name: transaction.name,
-        paymentChannel: transaction.payment_channel,
-        type: transaction.payment_channel,
-        accountId: transaction.account_id,
-        amount: transaction.amount,
-        pending: transaction.pending,
-        category: transaction.category ? transaction.category[0] : "",
-        date: transaction.date,
-        image: transaction.logo_url,
-      }));
+        return {
+          id: transaction.transaction_id,
+          name: transaction.name,
+          paymentChannel: transaction.payment_channel,
+          type: transaction.payment_channel,
+          accountId: transaction.account_id,
+          amount: transaction.amount,
+          pending: transaction.pending,
+          category,
+          date: transaction.date,
+          image: transaction.logo_url,
+        };
+      });
 
       hasMore = data.has_more;
     }
@@ -197,3 +216,4 @@ export const getTransactions = async ({
     return null;
   }
 };
+
